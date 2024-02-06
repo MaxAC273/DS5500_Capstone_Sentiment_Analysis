@@ -1,4 +1,3 @@
-
+*.pkl
 twitter_data.csv
-*.csv
 *.csv
