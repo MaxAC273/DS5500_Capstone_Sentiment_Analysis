@@ -24,8 +24,10 @@ class TweetCleaner:
         text = text.lower()  # convert text to lowercase
         text = re.sub(r'http\S+|www\S+|https\S+', '', text, flags=re.MULTILINE)  # remove URLs
         #text = re.sub(r'\@w+', '', text)  # remove mentions
-        text = re.sub(r'\@\w+', '', text)  # remove mentions
-        text = re.sub(r'\#\w+', '', text)  # remove hashtags
+        #text = re.sub(r'\@\w+', '', text)  # remove mentions
+        #text = re.sub(r'\#\w+', '', text)  # remove hashtags
+        text = re.sub(r'\#(?=\w)', '', text) # remove hastag symbol
+        text = re.sub(r'\@(?=\w)', '', text) # remove @ symbol
         text = re.sub(r'\s+', ' ', text)  # replace multiple spaces with a single space
         text = re.sub(r"^\s+|\s+$", "", text)  # remove spaces at the beginning and at the end of string
         text = re.sub(r'[^\w\s]', '', text)  # remove punctuations
@@ -57,6 +59,11 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 import nltk
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
 
 def preprocess_text(text):
     # Tokenize the text
@@ -74,11 +81,7 @@ def preprocess_text(text):
     return ' '.join(stemmed_tokens)
 
 def preprocess_text_lemmatization(text):
-    nltk.download('wordnet')
-    nltk.download('averaged_perceptron_tagger')
-    nltk.download('punkt')
-    nltk.download('stopwords')
-    nltk.download('wordnet')
+
     # Tokenize the text
     tokens = word_tokenize(text)
 
