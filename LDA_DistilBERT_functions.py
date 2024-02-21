@@ -69,11 +69,14 @@ class LDATopicModeler:
     coherence score calculation, and visualization of topics.
     """
 
-    def __init__(self, documents):
-        self.documents = documents
+    def __init__(self, df, documents:str):
+        self.dataframe = df
+        self.documents = df[documents]
         self.dictionary = None
         self.corpus = None
         self.lda_model = None
+        self.coherence_values = []
+        self.model_list = []
 
     def create_corpus_and_dictionary(self):
         """
@@ -84,21 +87,63 @@ class LDATopicModeler:
         self.dictionary.filter_extremes(no_below=15, no_above=0.5, keep_n=100000)
         self.corpus = [self.dictionary.doc2bow(doc) for doc in self.documents]
 
-    def find_optimal_number_of_topics(self, start=2, limit=40, step=3):
+    # def find_optimal_number_of_topics(self, start=2, limit=40, step=3):
+    #     """
+    #     Computes coherence values for various number of topics to find the optimal number.
+    #     """
+    #     from gensim.models.coherencemodel import CoherenceModel
+    #     from gensim.models.ldamodel import LdaModel
+
+    #     coherence_values = []
+    #     model_list = []
+    #     for num_topics in range(start, limit, step):
+    #         model = LdaModel(corpus=self.corpus, num_topics=num_topics, id2word=self.dictionary)
+    #         model_list.append(model)
+    #         coherencemodel = CoherenceModel(model=model, texts=self.documents, dictionary=self.dictionary, coherence='c_v')
+    #         coherence_values.append(coherencemodel.get_coherence())
+    #     return model_list, coherence_values
+
+    def compute_coherence_values(self, limit=40, start=2, step=6):
         """
         Computes coherence values for various number of topics to find the optimal number.
         """
         from gensim.models.coherencemodel import CoherenceModel
         from gensim.models.ldamodel import LdaModel
 
-        coherence_values = []
-        model_list = []
         for num_topics in range(start, limit, step):
             model = LdaModel(corpus=self.corpus, num_topics=num_topics, id2word=self.dictionary)
-            model_list.append(model)
+            self.model_list.append(model)
             coherencemodel = CoherenceModel(model=model, texts=self.documents, dictionary=self.dictionary, coherence='c_v')
-            coherence_values.append(coherencemodel.get_coherence())
-        return model_list, coherence_values
+            self.coherence_values.append(coherencemodel.get_coherence())
+
+    def plot_optimal_number_of_topics(self):
+            import matplotlib.pyplot as plt
+            import seaborn as sns
+            from matplotlib.lines import Line2D
+
+            plt.figure(figsize=(8,5))
+
+            # Assuming compute_coherence_values has been called
+            coherence_values = self.coherence_values
+            start = 2
+            limit = 40
+            step = 6
+            x = range(start, limit, step)
+
+            ax = sns.lineplot(x=x, y=coherence_values, color='#238C8C')
+
+            plt.title("Best Number of Topics for LDA Model")
+            plt.xlabel("Num Topics")
+            plt.ylabel("Coherence score")
+            plt.xlim(start, limit)
+            plt.xticks(range(2, limit, step))
+
+            plt.axvline(x[np.argmax(coherence_values)], color='#F26457', linestyle='--')
+
+            legend_elements = [Line2D([0], [0], color='#238C8C', ls='-', label='Coherence Value (c_v)'),
+                               Line2D([0], [1], color='#F26457', ls='--', label='Optimal Number of Topics')]
+            ax.legend(handles=legend_elements, loc='upper right')
+
 
     def train_lda_model(self, num_topics):
         """
@@ -117,6 +162,44 @@ class LDATopicModeler:
         lda_viz = gensimvis.prepare(self.lda_model, self.corpus, self.dictionary, sort_topics=True)
         return pyLDAvis.display(lda_viz)
 
+    def add_lda_results_to_dataframe(self, column_name:str):
+        """
+        Adds LDA model results to the DataFrame: the dominant topic for each document.
+        """
+        dominant_topics = []
+        for tweet_corpus in self.corpus:
+            # Get topic distribution for the document
+            topic_distribution = self.lda_model.get_document_topics(tweet_corpus)
+            # Sort the topics by probability
+            topic_distribution = sorted(topic_distribution, key=lambda x: x[1], reverse=True)
+            # Get the dominant topic (highest probability) for the document
+            dominant_topic = topic_distribution[0][0]  # This is the topic number
+            dominant_topics.append(dominant_topic)
+        self.dataframe[column_name] = dominant_topics
+
+    def display_topic_words(self, num_words=15, total_topics=None):
+           """
+           Displays the top words for each topic.
+
+           Parameters:
+           - num_words: Number of top words to display for each topic.
+           - total_topics: Total number of topics to display. If None, displays all topics.
+           """
+           total_topics = total_topics or self.lda_model.num_topics  # Use specified or default to model's total
+           for idx, topic in self.lda_model.show_topics(num_topics=total_topics, num_words=num_words, formatted=False):
+               topic_words = [word for word, _ in topic]
+               print(f"Topic: {idx + 1}\nWords: {', '.join(topic_words)}\n")
+
+
+    def apply_topic_labels(self, topic_labels, input_column:str, output_column:str):
+        """
+        Applies descriptive labels to topics based on their numeric identifier.
+        """
+        # Ensure 'dominant_topic' column exists from previous step
+        if input_column in self.dataframe.columns:
+            self.dataframe[output_column] = self.dataframe[input_column].apply(lambda topic_id: topic_labels.get(topic_id, "Unknown Topic"))
+        else:
+            print("Dataframe does not have dominant topics. Please run add_lda_results_to_dataframe first.")
 
 
 class DistilBERTClassifier:
