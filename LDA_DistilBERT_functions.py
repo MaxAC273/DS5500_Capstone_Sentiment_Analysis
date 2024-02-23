@@ -30,9 +30,10 @@ class DataPreprocessor:
         Applies lemmatization preprocessing to the 'cleaned_text' column.
         """
         import data_preprocessing_cleaned as clean
-        df = clean.TweetCleaner(self.csv_file).clean_tweets()
-        df['preprocessed_text'] = df['cleaned_text'].apply(clean.preprocess_text_lemmatization)
-        self.df = df
+        df = clean.TweetCleaner(self.csv_file)
+        cleaned_df = df.clean_tweets()
+        cleaned_df['preprocessed_text'] = cleaned_df['cleaned_text'].apply(clean.preprocess_text_lemmatization)
+        self.df = cleaned_df
 
     def preprocess_text(self):
         """
