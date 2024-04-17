@@ -20,9 +20,7 @@ In this project, we delve into sentiment analysis on a Twitter dataset centered 
 
 5. **data_preprocessing_cleaned.py**: This Python script contains resusable functions for cleaning and preprocessing text data. It provides modularized code that can be imported and used in the notebooks or other scripts for analysis.
 
-6. **twitter_data.csv**: This dataset was sourced from Kaggle, encompassing a collection of 415,000 tweets spanning from July 1, 2022, to August 28, 2022, centered around the overturn of Roe v. Wade. Stored in a .csvformat, the dataset is approximately 243 MB in size, structured into 20 columns across 415,373 rows. Each row represents an individual tweet, with columns detailing both user-specific information (such as follower count, user ID, location, etc.) and tweet-specific data (including hashtags, posting date, number of retweets, and more). Source: https://www.kaggle.com/datasets/bwandowando/-roe-v-wade-twitter-dataset/data
-
-7. **twitier.csv**: This CSV file contains the Twitter data scraped after June 2022, focusing on discussions related to abortion. Please note that this dataset is used for sentiment analysis in this project.
+6. **twitter_data.csv**: This dataset was sourced from Kaggle, encompassing a collection of 415,000 tweets spanning from July 1, 2022, to August 28, 2022, centered around the overturn of Roe v. Wade. Stored in a .csvformat, the dataset is approximately 243 MB in size, structured into 20 columns across 415,373 rows. Each row represents an individual tweet, with columns detailing both user-specific information (such as follower count, user ID, location, etc.) and tweet-specific data (including hashtags, posting date, number of retweets, and more). This is the dataset used for this project. Source: https://www.kaggle.com/datasets/bwandowando/-roe-v-wade-twitter-dataset/data
 
 ### How to Use
 
