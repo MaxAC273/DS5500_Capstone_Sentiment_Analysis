@@ -10,13 +10,13 @@ In this project, we delve into sentiment analysis on a Twitter dataset centered 
 
 ### Files Included
 
-1. **Data Preprocessing_Classic ML Models_User Interface.ipynb**: This notebook contains code for data preprocessing and building classic machine learning models for sentiment analysis on the cleaned Twitter data. It may also include the development of a user interface (UI) for interacting with the trained models.
+1. **Data Preprocessing_Classic ML Models_User Interface.ipynb**: This notebook contains code for data preprocessing and building classic machine learning models for sentiment analysis on the cleaned Twitter data. It also include the development of a user interface (UI) for interacting with the a selected  trained model.
 
-2. **BERTopic_sentiment_analysis.ipynb**: This notebook focuses on sentiment analysis using the BERTopic approach. BERTopic is a topic modeling technique based on BERT embeddings. The notebook likely covers preprocessing, topic modeling, and sentiment analysis using BERTopic.
+2. **BERTopic_sentiment_analysis.ipynb**: This notebook focuses on sentiment analysis using the BERTopic approach. BERTopic is a topic modeling technique based on BERT embeddings. The notebook covers preprocessing, topic modeling, and sentiment analysis using BERTopic.
 
 3. **LDA_DistilBERT_Models.ipynb**: This notebook explores sentiment analysis using a combination of Latent Dirichlet Allocation (LDA) and DistilBERT models. LDA is a topic modeling technique, while DistilBERT is a distilled version of the BERT model. The notebook may include preprocessing, topic modeling with LDA, and sentiment analysis using DistilBERT.
 
-4. **LDA_DistilBERT_functions.py**: This Python script likely contains reusable functions for preprocessing text data, performing LDA topic modeling, and conducting sentiment analysis using DistilBERT. It provides modularized code that can be imported and used in the notebooks or other scripts for analysis.
+4. **LDA_DistilBERT_functions.py**: This Python script contains reusable functions for preprocessing text data, performing LDA topic modeling, and conducting sentiment analysis using DistilBERT. It provides modularized code that can be imported and used in the notebooks or other scripts for analysis.
 
 5. **twitier.csv**: This CSV file contains the Twitter data scraped after June 2022, focusing on discussions related to abortion. Please note that this dataset is used for sentiment analysis in this project.
 
