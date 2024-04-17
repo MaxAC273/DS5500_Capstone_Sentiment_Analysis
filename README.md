@@ -27,13 +27,13 @@ In this project, we delve into sentiment analysis on a Twitter dataset centered 
 1. **Clone the Repository**: Clone this repository to your local machine using:
 
     ```
-    git clone https://github.com/your-username/project-name.git
+    git clone https://github.com/aycheung/DS5500_Capstone_Sentiment_Analysis.git
     ```
 
 2. **Navigate to the Directory**: Enter the project directory:
 
     ```
-    cd project-name
+    cd DS5500_Capstone_Sentiment_Analysis
     ```
 
 3. **Run the Notebooks**: Execute the notebooks in your preferred environment. These notebooks contain the code for loading, cleaning, and analyzing the Twitter data.
@@ -42,4 +42,4 @@ In this project, we delve into sentiment analysis on a Twitter dataset centered 
 
 - Python 3.x
 - Jupyter Notebook
-- Libraries: pandas, numpy, nltk, etc. (Install dependencies using `pip install -r requirements.txt`)
+- Libraries: pandas, numpy, matplotlib, seaborn, re, tkinter, nltk, torch, sklearn, transformers, gensim, pyLDAvis, bertopic
